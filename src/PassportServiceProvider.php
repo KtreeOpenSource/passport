@@ -21,6 +21,7 @@ use Laravel\Passport\Bridge\PersonalAccessGrant;
 use League\OAuth2\Server\Grant\RefreshTokenGrant;
 use Laravel\Passport\Bridge\RefreshTokenRepository;
 use League\OAuth2\Server\Grant\ClientCredentialsGrant;
+use App\Guards\AppPassportGuard;
 
 class PassportServiceProvider extends ServiceProvider
 {
@@ -258,7 +259,7 @@ class PassportServiceProvider extends ServiceProvider
     protected function makeGuard(array $config)
     {
         return new RequestGuard(function ($request) use ($config) {
-            return (new TokenGuard(
+            return (new AppPassportGuard(
                 $this->app->make(ResourceServer::class),
                 Auth::createUserProvider($config['provider']),
                 $this->app->make(TokenRepository::class),
